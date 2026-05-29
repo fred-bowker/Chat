@@ -98,6 +98,9 @@ final actor RecordingPlayer: ObservableObject {
     }
 
     private func play() {
+        // Recording leaves the shared session in .playAndRecord; re-assert .playback here so
+        // voice messages always play through the clean media path (otherwise playback hisses).
+        try? audioSession.setCategory(.playback)
         try? audioSession.setActive(true)
         player?.play()
         internalPlaying = true
